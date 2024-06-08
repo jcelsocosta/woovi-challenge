@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 
 export interface IHomeProps extends React.ComponentPropsWithoutRef<'div'> {}
 

@@ -28,5 +28,6 @@
   "resolve": {
     "extensions": [".tsx"]
   },
-  "include": ["src", "src/**/*.ts", "src/**/*.tsx"]
+  "include": ["src", "src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["src/**/*.stories.tsx", "node_modules"]
 }
