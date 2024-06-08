@@ -27,7 +27,7 @@ services:
       dockerfile: Dockerfile
     image: bank-ui
     ports:
-      - "5173:5173"
+      - "4173:4173"
   compass:
     image: mongo-express:latest
     container_name: mongo_compass
