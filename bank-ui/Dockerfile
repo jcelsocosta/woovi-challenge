@@ -20,6 +20,6 @@ COPY --from=builder /app/dist ./dist
 
 RUN npm install -g serve
 
-EXPOSE 4173
+EXPOSE 4000
 
 CMD ["npm", "run", "preview"]
