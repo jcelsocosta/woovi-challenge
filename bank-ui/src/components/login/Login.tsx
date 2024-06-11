@@ -18,12 +18,12 @@ export default function Login({}: ILoginProps) {
         </div>
         <div className="flex flex-row justify-center md:justify-normal mt-10 gap-x-10 w-full md:px-10 md:pt-10">
           <div className="hidden md:block w-[50rem] h-[30rem]">
-            <img className='h-full w-full' src="./photo2.jpg"></img>
+            <img className="h-full w-full" src="./photo2.jpg"></img>
           </div>
 
           <div className="flex items-center justify-center md:justify-normal w-[30rem] md:h-[30rem]">
             <div className="flex flex-col w-full h-full shadow-2xl rounded-lg p-4 text-center">
-              <div >
+              <div>
                 <span className="font-semibold text-2xl text-wooviSecondary">Login</span>
               </div>
               <FormProvider {...form}>
@@ -80,7 +80,7 @@ export default function Login({}: ILoginProps) {
                           {...field}
                           onClick={(evt) => {
                             evt.preventDefault()
-                            window.location.href = '/'
+                            window.location.href = '/signup'
                           }}
                         >
                           Fazer Cadastro{' '}
