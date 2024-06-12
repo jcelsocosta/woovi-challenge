@@ -1,4 +1,4 @@
-import { fetchQueryGraphql } from "@/utils/queryRelay"
+import { fetchQueryGraphql } from '@/utils/queryRelay'
 
 class SignUpController {
   async createSignUp(operation: any): Promise<any> {
@@ -8,6 +8,4 @@ class SignUpController {
 
 const signUpController = new SignUpController()
 
-export {
-  signUpController
-}
+export { signUpController }

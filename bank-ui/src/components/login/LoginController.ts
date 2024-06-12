@@ -1,4 +1,4 @@
-import { fetchQueryGraphql } from "@/utils/queryRelay"
+import { fetchQueryGraphql } from '@/utils/queryRelay'
 
 class LoginController {
   async login(operation: any): Promise<any> {

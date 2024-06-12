@@ -1,8 +1,7 @@
 import { DropdownMenuContent } from '@radix-ui/react-dropdown-menu'
 import { ArrowLeft, CircleUser, LogOut } from 'lucide-react'
 import { useContext } from 'react'
-import { DropdownMenu, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu'
-import AuthContext from '../../../context/auth/AuthContext'
+import { DropdownMenu, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import { useNavigate } from 'react-router-dom'
 
 export interface INavigationTopProps extends React.ComponentPropsWithoutRef<'div'> {}
@@ -23,7 +22,6 @@ export default function NavigationTop({ className }: INavigationTopProps) {
                 className="cursor-pointer"
                 onClick={(evt) => {
                   evt.preventDefault()
-                  console.log('LLL')
                   localStorage.removeItem('token')
                   navigate('/')
                 }}
