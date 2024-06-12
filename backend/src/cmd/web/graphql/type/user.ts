@@ -2,7 +2,7 @@ import { GraphQLObjectType, GraphQLString, GraphQLList } from 'graphql';
 import { errorType } from './error';
 
 const userType = new GraphQLObjectType({
-  name: 'user',
+  name: 'userType',
   fields: {
     userID: { type: GraphQLString }
   },

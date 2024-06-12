@@ -5,7 +5,8 @@ function toTransactionModel(transaction: TransactionModel): TransactionModel {
     transaction.transactionID,
     transaction.createdAt,
     transaction.updatedAt,
-    transaction.createdDate
+    transaction.createdDate,
+    transaction.status
   )
 }
 

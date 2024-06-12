@@ -1,7 +1,15 @@
+import { TransactionModel } from "../../../internal/database/model/transaction"
+import { ErrorType } from "./error"
+
 type CreateTransactionInput = {
   readonly senderAccountID: string
-  readonly receivedAccountID: string
+  readonly receivedUserID: string
   readonly value: number
 }
 
-export { CreateTransactionInput }
+type CreateTransactionOutput = {
+  readonly transaction: TransactionModel | null
+  readonly error: ErrorType | null
+}
+
+export { CreateTransactionInput, CreateTransactionOutput }

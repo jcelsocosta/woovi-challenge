@@ -1,7 +1,6 @@
 import { GraphQLObjectType, GraphQLInt } from 'graphql';
 import { errorType } from './error';
 
-
 const getAccountBalanceByAccountIDType = new GraphQLObjectType({
   name: 'getAccountBalanceByAccountIDType',
   fields: {

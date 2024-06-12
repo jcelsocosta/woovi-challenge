@@ -7,6 +7,7 @@ const schema = new GraphQLSchema({
   mutation: rootMutation
 
 })
+
 export {
   schema
 }
