@@ -5,21 +5,18 @@ type ContextGraphqlType = {
 }
 
 async function authorizationMiddleware(jwtToken: string): Promise<ContextGraphqlType> {
-  const { data, error } = await verifyJWT(jwtToken)
+  const { token } = await verifyJWT(jwtToken)
+
   const ctx: ContextGraphqlType = {
     accountID: null
   }
 
-  if (error) {
+  if (!token) {
     return ctx
-  }
-  if (data && data.error) {
-    return ctx
-  } else if (data && data.payload) {
-    const { accountID } = JSON.parse(data.payload)
+  } else if (token) {
+    const response = JSON.parse(token)
 
-    ctx.accountID = accountID
-    return ctx
+    ctx.accountID = response.accountID
   }
   return ctx
 }

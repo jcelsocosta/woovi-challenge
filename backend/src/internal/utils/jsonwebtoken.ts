@@ -21,7 +21,7 @@ async function verifyJWT(tokenJWT: string): Promise<any> {
         tokenJWT,
         JWT_TOKEN_SECRET_KEY,
         {
-          ignoreExpiration: false
+          ignoreExpiration: true
         },
         (error, decodedToken) => {
           if (error) {

@@ -9,7 +9,7 @@ class AccountBalanceUseCase {
   private accountBalanceMongoRepository: Repository<AccountBalanceModel>
 
   constructor() {
-    this.accountBalanceMongoRepository = appDataSource.getRepository(AccountBalanceModel)
+    this.accountBalanceMongoRepository = appDataSource.getMongoRepository(AccountBalanceModel)
   }
 
   async getAccountBalanceByAccountID(input: GetAccountBalanceByAccountIDInput): Promise<GetAccountBalanceByAccountIDOutput> {
@@ -26,7 +26,7 @@ class AccountBalanceUseCase {
         return output
 
       } else if (!errorMessage) {
-        const accountBalance = await this.accountBalanceMongoRepository.findOne({where: {accountID: input.accountID}})
+        const accountBalance = await this.accountBalanceMongoRepository.findOne({where: { accountID: input.accountID }})
 
         const output: GetAccountBalanceByAccountIDOutput = {
           value: accountBalance ? accountBalance.value : 0,
