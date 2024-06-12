@@ -4,9 +4,16 @@ import { PORT } from './config'
 import { schema } from './graphql/schema'
 import logger from 'koa-logger'
 import { authorizationMiddleware, ContextGraphqlType } from './graphql/middleware/authorization'
- 
+import cors from '@koa/cors'
+
 const app = new Koa()
+
 app.use(logger())
+app.use(cors({
+  origin: '*',
+  allowMethods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
+  allowHeaders: ['x-requested-with, content-type', 'authorization', 'origin', 'accept', 'x-access-token']
+}))
 
 function initServerGraphql(): void {
   const handler = createHandler({ schema, async context(req: any, params: any): Promise<any> {
