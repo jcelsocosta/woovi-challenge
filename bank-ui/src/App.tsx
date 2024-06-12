@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import About from './components/About'
+import Default from './components/Default'
 import Home from './components/Home'
 import Login from './components/login/Login'
 import NoMatch from './components/NoMatch'
@@ -9,7 +10,8 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Home></Home>} />
+        <Route path="/" element={<Default></Default>} />
+        <Route path="/home" element={<Home></Home>} />
         <Route path="/login" element={<Login></Login>} />
         <Route path="/about" element={<About></About>} />
         <Route path="/signup" element={<SignUp></SignUp>} />

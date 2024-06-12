@@ -114,7 +114,8 @@ export default function Login({}: ILoginProps) {
                               })
                             } else if (loginUser && loginUser.token) {
                               localStorage.setItem('token', loginUser.token)
-                              navigate('/')
+
+                              navigate('/home')
                             } else if (loginUser && !loginUser.token && !loginUser.error) {
                               toast({
                                 title: 'Messagem de error',

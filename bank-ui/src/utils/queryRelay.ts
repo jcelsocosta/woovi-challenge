@@ -1,12 +1,14 @@
 import { Environment, Network, RecordSource, Store } from 'relay-runtime'
-
+//backend.codeinterviewstep.com
 async function fetchQueryGraphql(query: any): Promise<any> {
+  const token = localStorage.getItem('token')
   try {
-    const response = await fetch('http://backend.codeinterviewstep.com:3000/graphql', {
+    const response = await fetch('http://localhost:3000/graphql', {
       method: 'POST',
       
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': token ? `Bearer ${localStorage.getItem('token')}`  : ''
       },
       body: JSON.stringify({
         query

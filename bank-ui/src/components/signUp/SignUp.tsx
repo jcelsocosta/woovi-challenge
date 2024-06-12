@@ -153,7 +153,7 @@ export default function SignUp({}: ISignUpProps) {
                   } else if (createUser && createUser.token) {
                     localStorage.setItem('token', createUser.token)
 
-                    navigate('/')
+                    navigate('/home')
                   }
                 } else if (errorMessage) {
                   toast({
