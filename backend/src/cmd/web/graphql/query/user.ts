@@ -1,5 +1,5 @@
 import { GraphQLString } from 'graphql';
-import { GetUserInput, GetUserOutput, ListUsersOutput } from '../../../../domain/usecase/ucio/user';
+import { GetUserInput, GetUserOutput, ListUsersInput, ListUsersOutput } from '../../../../domain/usecase/ucio/user';
 import { UserUseCase } from '../../../../domain/usecase/user';
 import { getUserType, listUsersType } from '../type/user';
 
@@ -21,8 +21,14 @@ const listUsers = {
   name: 'listUsers',
   type: listUsersType,
   args: {},
-  resolve: async (_: any, args: any): Promise<ListUsersOutput> => {
-    return await new UserUseCase().listUsersUseCase();
+  resolve: async (_: any, args: any, ctx: any): Promise<ListUsersOutput> => {
+    const { accountID } = ctx 
+
+    const input: ListUsersInput = {
+      accountID
+    }
+
+    return await new UserUseCase().listUsersUseCase(input);
   },
 }
 

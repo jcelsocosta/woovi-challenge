@@ -1,10 +1,10 @@
-import { Entity, ObjectIdColumn, ObjectId, Column } from "typeorm"
+import { Entity, ObjectIdColumn, ObjectId, Column, PrimaryColumn } from "typeorm"
 
 @Entity({ name: 'account_balances' })
 class AccountBalanceModel {
   @ObjectIdColumn()
   readonly id?: ObjectId
-  @Column({ name: 'accountBalanceID', type: 'uuid' })
+  @PrimaryColumn({ name: 'accountBalanceID', type: 'uuid' })
   readonly accountBalanceID: string
   @Column({ name: 'createdAt', type: 'timestamp', nullable: false })
   readonly createdAt: Date

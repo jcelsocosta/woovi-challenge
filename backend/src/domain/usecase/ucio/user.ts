@@ -35,6 +35,10 @@ type GetUserOutput = {
   readonly error: ErrorType | null
 }
 
+type ListUsersInput = {
+  readonly accountID: string
+}
+
 type ListUsersOutput = {
   readonly users: UserModel[] | null
   readonly error: ErrorType | null
@@ -47,5 +51,6 @@ export type {
   CreateUserOutput,
   GetUserInput,
   GetUserOutput,
+  ListUsersInput,
   ListUsersOutput
 }

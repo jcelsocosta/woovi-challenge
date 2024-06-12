@@ -90,8 +90,12 @@ class TransactionUseCase {
             )
   
             const respose = await Promise.all([
-              this.accountBalanceRepository.save(sendAccountModel),
-              this.accountBalanceRepository.save(receivedAccountModel),
+              this.accountBalanceRepository.update({
+                accountBalanceID: sendAccountModel.accountBalanceID
+              },{...sendAccountModel}),
+              this.accountBalanceRepository.update({
+                accountBalanceID: receivedAccountModel.accountBalanceID
+              }, {...receivedAccountModel}),
               this.transactionRepository.save(transactionModel)
             ])
     

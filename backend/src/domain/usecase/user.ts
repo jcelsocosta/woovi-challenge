@@ -1,7 +1,7 @@
 import { UserModel } from "../../internal/database/model/user";
 import { createUserValidate, getUserValidate, loginUserValidate } from "../../internal/validate/user";
 import { appDataSource } from "../../main";
-import { CreateUserInput, CreateUserOutput, GetUserInput, GetUserOutput, ListUsersOutput, LoginUserInput, LoginUserOutput } from "./ucio/user";
+import { CreateUserInput, CreateUserOutput, GetUserInput, GetUserOutput, ListUsersInput, ListUsersOutput, LoginUserInput, LoginUserOutput } from "./ucio/user";
 import { v4 } from 'uuid'
 import { toUserModel } from "../../internal/database/model/transformer/user";
 import { ErrorCodeEnum, ErrorMessageEnum } from "./enum/error";
@@ -13,16 +13,16 @@ import { TaxModel } from "../../internal/database/model/tax";
 import { AccountBalanceModel } from "../../internal/database/model/account_balance";
 
 class UserUseCase {
-  private userMongoRepository: Repository<UserModel>
-  private accountMongoRepository: Repository<AccountModel>
-  private taxMongoRepository: Repository<TaxModel>
-  private accountBalanceMongoRepository: Repository<AccountBalanceModel>
+  private userRepository: Repository<UserModel>
+  private accountRepository: Repository<AccountModel>
+  private taxRepository: Repository<TaxModel>
+  private accountBalanceRepository: Repository<AccountBalanceModel>
 
   constructor() {
-    this.userMongoRepository = appDataSource.getRepository(UserModel)
-    this.accountMongoRepository = appDataSource.getRepository(AccountModel)
-    this.taxMongoRepository = appDataSource.getRepository(TaxModel)
-    this.accountBalanceMongoRepository = appDataSource.getRepository(AccountBalanceModel)
+    this.userRepository = appDataSource.getMongoRepository(UserModel)
+    this.accountRepository = appDataSource.getMongoRepository(AccountModel)
+    this.taxRepository = appDataSource.getMongoRepository(TaxModel)
+    this.accountBalanceRepository = appDataSource.getMongoRepository(AccountBalanceModel)
   }
 
   async createUserUseCase(input: CreateUserInput): Promise<CreateUserOutput> {
@@ -37,7 +37,7 @@ class UserUseCase {
         }
         return output
       } else if (!errorMessage) {
-        const existEmail = await this.userMongoRepository.findOne({ where: { email: input.email }})
+        const existEmail = await this.userRepository.findOne({ where: { email: input.email }})
 
         if (existEmail) {
           console.log('Error: ', 'O email já foi cadastrado.')
@@ -48,7 +48,6 @@ class UserUseCase {
           return output
         }
 
-        const userID = v4()
         const now = new Date()
         const hash = await bcrypt.hash(input.password, 5)
 
@@ -62,9 +61,17 @@ class UserUseCase {
           input.CNPJ
         )
 
+        const userID = v4()
         const userModel = new UserModel(
-          userID, now, now, now, input.firstName,
-          taxID, input.lastName, input.email, hash
+          userID,
+          now,
+          now,
+          now,
+          taxID,
+          input.firstName,
+          input.lastName,
+          input.email,
+          hash
         )
 
         const accountID = v4()
@@ -85,13 +92,13 @@ class UserUseCase {
           accountID,
           50000
         )
-        const tax = await this.taxMongoRepository.save(taxModel)
+        const tax = await this.taxRepository.save(taxModel)
 
-        const user = await this.userMongoRepository.save(userModel)
+        const user = await this.userRepository.save(userModel)
 
-        const account = await this.accountMongoRepository.save(accountModel)
+        const account = await this.accountRepository.save(accountModel)
         
-        const accountBalance = await this.accountBalanceMongoRepository.save(accountBalanceModel)
+        const accountBalance = await this.accountBalanceRepository.save(accountBalanceModel)
 
         const tokenParams = {
           email: user.email,
@@ -138,10 +145,10 @@ class UserUseCase {
         }
         return output
       } else if (!errorMessage) {
-        const user = await this.userMongoRepository.findOne({where: {email: input.email } })
+        const user = await this.userRepository.findOne({where: {email: input.email } })
 
         if (user && await bcrypt.compare(input.password, user.password as string)) {
-          const account = await this.accountMongoRepository.findOne({where: { userID: user.userID }})
+          const account = await this.accountRepository.findOne({where: { userID: user.userID }})
           
           if (account) {
             const tokenParams = {
@@ -208,7 +215,7 @@ class UserUseCase {
         return output
       }
 
-      const user = await this.userMongoRepository.findOne({ where: { userID: input.userID } })
+      const user = await this.userRepository.findOne({ where: { userID: input.userID } })
 
       const output: GetUserOutput = {
         user: user ? toUserModel(user) : null,
@@ -230,13 +237,19 @@ class UserUseCase {
     }
   }
 
-  async listUsersUseCase(): Promise<ListUsersOutput> {
+  async listUsersUseCase(input: ListUsersInput): Promise<ListUsersOutput> {
     try {
+      const result = await Promise.all([
+        this.accountRepository.findOne({where: {accountID: input.accountID}}),
+        this.userRepository.find()
+      ])
+      const account = result[0]
+      const users = result[1]
 
-      const users = await this.userMongoRepository.find()
+      const usersResponse = users.filter((el) => el.userID !== account?.userID)
 
       const output: ListUsersOutput = {
-        users: users ? users.map((user) => toUserModel(user)) : null,
+        users: usersResponse ? usersResponse.map((user) => toUserModel(user)) : null,
         error: null
       }
 

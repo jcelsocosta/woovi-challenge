@@ -1,6 +1,6 @@
 import { TransactionUseCase } from "../../../../domain/usecase/transaction"
 import { CreateTransactionInput, CreateTransactionOutput } from "../../../../domain/usecase/ucio/transaction"
-import {GraphQLString} from 'graphql'
+import { GraphQLString, GraphQLInt } from 'graphql'
 import { createTransactionType } from "../type/transaction"
 import { ContextGraphqlType } from "../middleware/authorization"
 
@@ -8,7 +8,8 @@ const createTransaction = {
   name: 'createTransaction',
   type: createTransactionType,
   args: {
-    receivedUserID: { type: GraphQLString}
+    receivedUserID: { type: GraphQLString},
+    value: { type: GraphQLInt }
   },
   resolve: async (_: any, args: any, ctx: ContextGraphqlType): Promise<CreateTransactionOutput> => {
     const { accountID } = ctx

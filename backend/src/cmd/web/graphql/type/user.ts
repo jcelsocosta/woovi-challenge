@@ -4,7 +4,10 @@ import { errorType } from './error';
 const userType = new GraphQLObjectType({
   name: 'userType',
   fields: {
-    userID: { type: GraphQLString }
+    userID: { type: GraphQLString },
+    firstName: { type: GraphQLString },
+    lastName: { type: GraphQLString },
+    email: { type: GraphQLString }
   },
 });
 
