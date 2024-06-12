@@ -6,6 +6,9 @@ function toTransactionModel(transaction: TransactionModel): TransactionModel {
     transaction.createdAt,
     transaction.updatedAt,
     transaction.createdDate,
+    transaction.senderAccountID,
+    transaction.receivedAccountID,
+    transaction.value,
     transaction.status
   )
 }

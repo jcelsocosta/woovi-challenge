@@ -22,7 +22,7 @@ class MongoDBConfig {
   private buildConfigDev(): void {
     this.appDataSource = new DataSource({
       type: 'mongodb',
-      url: 'mongodb://admin:example@localhost:27017/bank?authSource=admin',
+      url: 'mongodb://:@:27017/bank?authSource=admin',
       entities: this.models,
       useNewUrlParser: true,
       synchronize: false, // Isso sincronizará as entidades com o banco de dados (cuidado em produção)
