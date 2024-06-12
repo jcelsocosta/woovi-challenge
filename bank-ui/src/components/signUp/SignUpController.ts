@@ -1,6 +1,8 @@
+import { fetchQueryGraphql } from "@/utils/queryRelay"
+
 class SignUpController {
-  async createSignUp(args: any): Promise<any> {
-    console.log('ARGS', args)
+  async createSignUp(operation: any): Promise<any> {
+    return await fetchQueryGraphql(operation)
   }
 }
 

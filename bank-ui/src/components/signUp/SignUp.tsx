@@ -1,5 +1,6 @@
 import LayoutSecondary from '@/layout/Secondary/Secondary'
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { ToastAction } from '../ui/toast'
@@ -9,6 +10,8 @@ import { signUpController } from './SignUpController'
 export interface ISignUpProps extends React.ComponentPropsWithoutRef<'div'> {}
 
 export default function SignUp({}: ISignUpProps) {
+  const navigate = useNavigate()
+
   const { toast } = useToast()
   const [firstName, setFirstName] = useState<string>('')
   const [lastName, setLastName] = useState<string>('')
@@ -33,7 +36,7 @@ export default function SignUp({}: ISignUpProps) {
 
     if (password && repeatPassword && password !== repeatPassword) return 'As senhas não são iguais.'
 
-    return 'null'
+    return null
   }
 
   return (
@@ -117,10 +120,45 @@ export default function SignUp({}: ISignUpProps) {
 
                 const errorMessage = validateSignUp(payload)
                 if (!errorMessage) {
-                  const {} = await signUpController.createSignUp(payload)
+                  const queryText = `
+                    mutation CreateUser {
+                      createUser(
+                        firstName: "${firstName}",
+                        lastName: "${lastName}",
+                        CPF: "${cpf}",
+                        CNPJ: "${cnpj}",
+                        email: "${email}",
+                        password: "${password}",
+                        repeatPassword: "${repeatPassword}"
+                      ) {
+                        token
+                        error {
+                          code
+                          message
+                        }
+                      }
+                    }
+                  `
+                  const { data } = await signUpController.createSignUp(queryText)
+                  console.log('data', data)
+                  const { createUser } = data
+
+                  if (createUser && createUser.error) {
+                    toast({
+                      title: 'Messagem de error',
+                      variant: 'destructive',
+                      description: createUser.error.message,
+                      action: <ToastAction altText="Goto schedule">Fechar</ToastAction>
+                    })
+                  } else if (createUser && createUser.token) {
+                    localStorage.setItem('token', createUser.token)
+
+                    navigate('/')
+                  }
                 } else if (errorMessage) {
                   toast({
                     title: 'Messagem de error',
+                    variant: 'destructive',
                     description: errorMessage,
                     action: <ToastAction altText="Goto schedule">Fechar</ToastAction>
                   })

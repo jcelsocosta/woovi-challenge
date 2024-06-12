@@ -3,10 +3,19 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import LayoutSecondary from '@/layout/Secondary/Secondary'
+import { loginController } from './LoginController'
+import { toast } from '../ui/use-toast'
+import { ToastAction } from '../ui/toast'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export interface ILoginProps extends React.ComponentPropsWithoutRef<'div'> {}
 
 export default function Login({}: ILoginProps) {
+  const navigate = useNavigate()
+
+  const [email, setEmail] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
   const form = useForm()
   return (
     <>
@@ -33,7 +42,15 @@ export default function Login({}: ILoginProps) {
                   render={({ field }) => (
                     <FormItem className="mt-5">
                       <FormControl>
-                        <Input className="pt-6 pb-6" placeholder="email" {...field} />
+                        <Input
+                          className="pt-6 pb-6"
+                          placeholder="email"
+                          {...field}
+                          onChange={(evt) => {
+                            evt.preventDefault()
+                            setEmail(() => evt.target.value)
+                          }}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -46,7 +63,16 @@ export default function Login({}: ILoginProps) {
                   render={({ field }) => (
                     <FormItem className="mt-5">
                       <FormControl>
-                        <Input type={'password'} className="pt-6 pb-6" placeholder="********" {...field} />
+                        <Input
+                          type={'password'}
+                          className="pt-6 pb-6"
+                          placeholder="********"
+                          {...field}
+                          onChange={(evt) => {
+                            evt.preventDefault()
+                            setPassword(() => evt.target.value)
+                          }}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -59,7 +85,46 @@ export default function Login({}: ILoginProps) {
                   render={({ field }) => (
                     <FormItem className="mt-5">
                       <FormControl>
-                        <Button className="bg-woovi pb-6 pt-6 hover:bg-woovi hover:opacity-60 w-full" {...field}>
+                        <Button
+                          className="bg-woovi pb-6 pt-6 hover:bg-woovi hover:opacity-60 w-full"
+                          {...field}
+                          onClick={async (evt) => {
+                            evt.preventDefault()
+
+                            const queryText = `
+                              mutation LoginUser {
+                                loginUser(email: "${email}", password: "${password}") {
+                                  token
+                                  error {
+                                    code
+                                    message
+                                  }
+                                }
+                              }
+                            `
+                            const { data } = await loginController.login(queryText)
+
+                            const { loginUser } = data
+                            if (loginUser && loginUser.error) {
+                              toast({
+                                title: 'Messagem de error',
+                                variant: 'destructive',
+                                description: loginUser.error.message,
+                                action: <ToastAction altText="Goto schedule">Fechar</ToastAction>
+                              })
+                            } else if (loginUser && loginUser.token) {
+                              localStorage.setItem('token', loginUser.token)
+                              navigate('/')
+                            } else if (loginUser && !loginUser.token && !loginUser.error) {
+                              toast({
+                                title: 'Messagem de error',
+                                variant: 'destructive',
+                                description: 'Email ou senha incorretos',
+                                action: <ToastAction altText="Goto schedule">Fechar</ToastAction>
+                              })
+                            }
+                          }}
+                        >
                           Entrar{' '}
                         </Button>
                       </FormControl>
