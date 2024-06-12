@@ -1,4 +1,4 @@
-import { GraphQLSchema, GraphQLObjectType } from 'graphql';
+import { GraphQLSchema } from 'graphql';
 import { rootMutation } from './mutation/_index';
 import { rootQuery } from './query/_index';
 

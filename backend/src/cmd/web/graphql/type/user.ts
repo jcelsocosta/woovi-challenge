@@ -8,6 +8,23 @@ const userType = new GraphQLObjectType({
   },
 });
 
+
+const createUserType = new GraphQLObjectType({
+  name: 'createUserType',
+  fields: {
+    token: { type: GraphQLString },
+    error: { type: errorType }
+  }
+})
+
+const loginUserType = new GraphQLObjectType({
+  name: 'loginUserType',
+  fields: {
+    token: { type: GraphQLString},
+    error: { type: errorType }
+  }
+})
+
 const getUserType = new GraphQLObjectType({
   name: 'getUserType',
   fields: {
@@ -24,16 +41,9 @@ const listUsersType = new GraphQLObjectType({
   }
 })
 
-const createUserType = new GraphQLObjectType({
-  name: 'createUserType',
-  fields: {
-    user: { type: userType },
-    error: { type: errorType }
-  }
-})
-
 export {
   userType,
+  loginUserType,
   createUserType,
   getUserType,
   listUsersType
