@@ -1,4 +1,4 @@
-import { Entity, ObjectIdColumn, PrimaryColumn, ObjectId, Column } from "typeorm"
+import { Entity, ObjectIdColumn, ObjectId, Column } from "typeorm"
 
 @Entity({ name: 'accounts' })
 class AccountModel {

@@ -10,15 +10,19 @@ import { AccountModel } from "../../internal/database/model/account";
 import * as bcrypt from 'bcrypt'
 import { signJWT } from "../../internal/utils/jsonwebtoken";
 import { TaxModel } from "../../internal/database/model/tax";
+import { AccountBalanceModel } from "../../internal/database/model/account_balance";
 
 class UserUseCase {
   private userMongoRepository: Repository<UserModel>
   private accountMongoRepository: Repository<AccountModel>
   private taxMongoRepository: Repository<TaxModel>
+  private accountBalanceRepository: Repository<AccountBalanceModel>
+
   constructor() {
     this.userMongoRepository = appDataSource.getRepository(UserModel)
     this.accountMongoRepository = appDataSource.getRepository(AccountModel)
     this.taxMongoRepository = appDataSource.getRepository(TaxModel)
+    this.accountBalanceRepository = appDataSource.getRepository(AccountBalanceModel)
   }
 
   async createUserUseCase(input: CreateUserInput): Promise<CreateUserOutput> {
@@ -71,12 +75,23 @@ class UserUseCase {
           now,
           userID
         )
+
+        const accountBalanceID = v4()
+        const accountBalanceModel = new AccountBalanceModel(
+          accountBalanceID,
+          now,
+          now,
+          now,
+          accountID,
+          50000
+        )
         const tax = await this.taxMongoRepository.save(taxModel)
 
         const user = await this.userMongoRepository.save(userModel)
 
         const account = await this.accountMongoRepository.save(accountModel)
         
+        const accountBalance = await this.accountBalanceRepository.save(accountBalanceModel)
 
         const tokenParams = {
           email: user.email,

@@ -1,6 +1,7 @@
 import 'reflect-metadata'
 import { DataSource } from 'typeorm'
 import { AccountModel } from '../../model/account'
+import { AccountBalanceModel } from '../../model/account_balance'
 import { TaxModel } from '../../model/tax'
 import { TransactionModel } from '../../model/transaction'
 import { UserModel } from '../../model/user'
@@ -11,7 +12,7 @@ class MongoDBConfig {
 
   constructor() {
     this.appDataSource = null
-    this.models = [UserModel, TransactionModel, TaxModel, AccountModel]
+    this.models = [UserModel, TransactionModel, TaxModel, AccountModel, AccountBalanceModel]
   }
 
   public get getAppDataSource(): DataSource | any {
