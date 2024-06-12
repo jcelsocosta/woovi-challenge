@@ -6,9 +6,10 @@ const getAccountBalanceByAccountID = {
   name: 'getAccountBalanceByAccountID',
   type: getAccountBalanceByAccountIDType,
   args: {},
-  resolve: async (_: any, args: any): Promise<GetAccountBalanceByAccountIDOutput> => {
+  resolve: async (_: any, args: any, ctx: any): Promise<GetAccountBalanceByAccountIDOutput> => {
+    const { accountID } = ctx
     const input: GetAccountBalanceByAccountIDInput = {
-      accountID: '7a102ebe-0b14-46f3-a506-7521f8b38515'
+      accountID
     };
     return await new AccountBalanceUseCase().getAccountBalanceByAccountID(input);
   },
