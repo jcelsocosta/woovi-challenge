@@ -5,7 +5,7 @@ import { CreateUserInput, CreateUserOutput, GetUserInput, GetUserOutput, ListUse
 import { v4 } from 'uuid'
 import { toUserModel } from "../../internal/database/model/transformer/user";
 import { ErrorCodeEnum, ErrorMessageEnum } from "./enum/error";
-import { DataSource, Repository } from "typeorm";
+import { Repository } from "typeorm";
 import { AccountModel } from "../../internal/database/model/account";
 import * as bcrypt from 'bcrypt'
 import { signJWT } from "../../internal/utils/jsonwebtoken";
@@ -16,13 +16,13 @@ class UserUseCase {
   private userMongoRepository: Repository<UserModel>
   private accountMongoRepository: Repository<AccountModel>
   private taxMongoRepository: Repository<TaxModel>
-  private accountBalanceRepository: Repository<AccountBalanceModel>
+  private accountBalanceMongoRepository: Repository<AccountBalanceModel>
 
   constructor() {
     this.userMongoRepository = appDataSource.getRepository(UserModel)
     this.accountMongoRepository = appDataSource.getRepository(AccountModel)
     this.taxMongoRepository = appDataSource.getRepository(TaxModel)
-    this.accountBalanceRepository = appDataSource.getRepository(AccountBalanceModel)
+    this.accountBalanceMongoRepository = appDataSource.getRepository(AccountBalanceModel)
   }
 
   async createUserUseCase(input: CreateUserInput): Promise<CreateUserOutput> {
@@ -91,7 +91,7 @@ class UserUseCase {
 
         const account = await this.accountMongoRepository.save(accountModel)
         
-        const accountBalance = await this.accountBalanceRepository.save(accountBalanceModel)
+        const accountBalance = await this.accountBalanceMongoRepository.save(accountBalanceModel)
 
         const tokenParams = {
           email: user.email,
@@ -114,7 +114,6 @@ class UserUseCase {
       }
       return output
     } catch (err: any) {
-
       console.log('Error: ', err)
       const output: CreateUserOutput = {
         token: null,
