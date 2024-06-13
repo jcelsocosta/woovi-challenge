@@ -20,17 +20,20 @@ class TransactionModel {
   readonly value: number
   @Column({ name: 'status', type: 'varchar', nullable: false})
   readonly status: string // processing | done | error
+  @Column({name: 'idempotencyKey', type: 'varchar', unique: true, nullable: false})
+  readonly idempotencyKey: string
 
   constructor(transactionID: string, createdAt: Date, updatedAt: Date, createdDate: Date,
-    senderAccountID: string, receivedAccountID: string, value: number, status: string) {
+    senderAccountID: string, receivedAccountID: string, value: number, status: string, idempotencyKey: string) {
     this.transactionID = transactionID
     this.createdAt = createdAt
     this.updatedAt = updatedAt
     this.createdDate = createdDate
-    this.status = status
     this.senderAccountID = senderAccountID
-    this.value = value
     this.receivedAccountID = receivedAccountID
+    this.value = value
+    this.status = status
+    this.idempotencyKey = idempotencyKey
   }
 }
 

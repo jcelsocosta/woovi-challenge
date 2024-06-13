@@ -26,7 +26,6 @@ class AccountBalanceUseCase {
         return output
 
       } else if (!errorMessage) {
-        console.log(input.accountID)
         const accountBalance = await this.accountBalanceMongoRepository.findOne({where: { accountID: input.accountID }})
 
         const output: GetAccountBalanceByAccountIDOutput = {

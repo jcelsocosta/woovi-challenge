@@ -1,15 +1,18 @@
 import { centsToReals } from '@/utils/cents_to_reals'
+import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { historyController } from './HistoryController'
 import NavigationLeft from './navigationLeft/navigationLeft'
 import NavigationTop from './navigationTop/navigationTop'
+import { Badge } from './ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
 import { ToastAction } from './ui/toast'
 import { toast } from './ui/use-toast'
 
 type TransactionType = {
   transactionID: string
+  createdDate: string
   value: number
   status: string
   sender: number
@@ -39,7 +42,8 @@ export default function History({}: IHistoryProps) {
             value
             status,
             sender,
-            received
+            received,
+            createdDate
           }
           error {
             code
@@ -60,7 +64,6 @@ export default function History({}: IHistoryProps) {
       })
     } else if (listTransactionsByAccountID) {
       setTransactions(() => listTransactionsByAccountID.transactions)
-      console.log('adasdad', listTransactionsByAccountID)
     }
   }
 
@@ -80,14 +83,32 @@ export default function History({}: IHistoryProps) {
                   <CardDescription></CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="w-64">
+                  <div className="w-full">
                     {transactions &&
                       transactions.length &&
                       transactions.map((el) => (
-                        <div key={el.transactionID}>
-                          {el.sender === 1 ? <span>R$ - {centsToReals(el.value.toString())}</span> : ''}
+                        <div className="w-full" key={el.transactionID}>
+                          {el.sender === 1 ? (
+                            <div className="inline-flex">
+                              <span>
+                                <Badge className="bg-gray-300 text-black">Transferência enviada</Badge> R$ {centsToReals(el.value.toString())} --
+                                Data: {moment(el.createdDate).format('DD/MM/YYYY, h:mm:ss a')}
+                              </span>
+                            </div>
+                          ) : (
+                            ''
+                          )}
 
-                          {el.received === 1 ? <span>R$ {centsToReals(el.value.toString())}</span> : ''}
+                          {el.received === 1 ? (
+                            <div className="inline-flex">
+                              <span>
+                                <Badge className="bg-green-500">Transferência recebida</Badge> R$ {centsToReals(el.value.toString())} -- Data:{' '}
+                                {moment(el.createdDate).format('DD/MM/YYYY, h:mm:ss a')}
+                              </span>
+                            </div>
+                          ) : (
+                            ''
+                          )}
                         </div>
                       ))}
                   </div>

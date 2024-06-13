@@ -186,7 +186,6 @@ export default function Transfer({}: ITransferProps) {
                       placeholder="Digite o valor"
                       value={value}
                       onChange={(evt) => {
-                        console.log(evt.target.value)
                         if (evt.target.value) {
                           const valueFormatted = evt.target.value.replace(/\D/g, '')
                           setValue(() => centsToReals(valueFormatted))

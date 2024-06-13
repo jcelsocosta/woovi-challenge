@@ -22,7 +22,7 @@ export default function NavigationTop({ className }: INavigationTopProps) {
                 onClick={(evt) => {
                   evt.preventDefault()
                   localStorage.removeItem('token')
-                  navigate('/')
+                  navigate('/login')
                 }}
               >
                 <LogOut />

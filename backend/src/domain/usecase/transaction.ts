@@ -7,6 +7,9 @@ import { appDataSource } from "../../main"
 import { Repository } from "typeorm"
 import { AccountBalanceModel } from "../../internal/database/model/account_balance"
 import { AccountModel } from "../../internal/database/model/account"
+import crypto from 'crypto'
+import { dateNow } from "../../internal/utils/date"
+import moment from "moment"
 
 class TransactionUseCase {
   private transactionRepository: Repository<TransactionModel>
@@ -58,53 +61,70 @@ class TransactionUseCase {
             }
             return output
           } else if (sendAccountBalance && receivedAccountBalance && sendAccountBalance.value >= input.value) {
-            const now = new Date()
-            const transactionID = v4()
-            const transactionModel = new TransactionModel(
-              transactionID,
-              now,
-              now,
-              now,
-              input.senderAccountID,
-              receivedAccountBalance.accountID,
-              input.value,
-              'done'
-            )
-  
-            const sendAccountModel = new AccountBalanceModel(
-              sendAccountBalance.accountBalanceID,
-              sendAccountBalance.createdAt,
-              now,
-              sendAccountBalance.createdDate,
-              sendAccountBalance.accountID,
-              sendAccountBalance.value - input.value
-            )
-  
-            const receivedAccountModel = new AccountBalanceModel(
-              receivedAccountBalance.accountBalanceID,
-              receivedAccountBalance.createdAt,
-              now,
-              receivedAccountBalance.createdDate,
-              receivedAccountBalance.accountID,
-              receivedAccountBalance.value + input.value
-            )
-  
-            const respose = await Promise.all([
-              this.accountBalanceRepository.update({
-                accountBalanceID: sendAccountModel.accountBalanceID
-              },{...sendAccountModel}),
-              this.accountBalanceRepository.update({
-                accountBalanceID: receivedAccountModel.accountBalanceID
-              }, {...receivedAccountModel}),
-              this.transactionRepository.save(transactionModel)
-            ])
+            const combined = input.senderAccountID + input.receivedUserID + input.value
+            const idempotencyKey = crypto.createHash('sha256').update(combined).digest('hex')
+
+            const transaction = await this.transactionRepository.findOne({ where: { idempotencyKey: idempotencyKey }, order: { createdDate: 'DESC' }})
+            // console.log('p1', moment().format(transaction?.createdDate.toString()))
+            // console.log('p2', moment().subtract(3, 'minutes').format())
+            // console.log('date', moment().format(transaction?.createdDate.toString()) >= moment().subtract(3, 'minutes').format())
+            if (transaction && (moment().format(transaction.createdDate.toString()) >= moment().subtract(3, 'minutes').format())) {
+              const output: CreateTransactionOutput = {
+                transaction: transaction,
+                error: null
+              }
+      
+              return output
+            } else {
+              const now = dateNow()
+              const transactionID = v4()
+              const transactionModel = new TransactionModel(
+                transactionID,
+                now,
+                now,
+                now,
+                input.senderAccountID,
+                receivedAccountBalance.accountID,
+                input.value,
+                'done',
+                idempotencyKey
+              )
     
-            const output: CreateTransactionOutput = {
-              transaction: respose[2],
-              error: null
+              const sendAccountModel = new AccountBalanceModel(
+                sendAccountBalance.accountBalanceID,
+                sendAccountBalance.createdAt,
+                now,
+                sendAccountBalance.createdDate,
+                sendAccountBalance.accountID,
+                sendAccountBalance.value - input.value
+              )
+    
+              const receivedAccountModel = new AccountBalanceModel(
+                receivedAccountBalance.accountBalanceID,
+                receivedAccountBalance.createdAt,
+                now,
+                receivedAccountBalance.createdDate,
+                receivedAccountBalance.accountID,
+                receivedAccountBalance.value + input.value
+              )
+    
+              const respose = await Promise.all([
+                this.accountBalanceRepository.update({
+                  accountBalanceID: sendAccountModel.accountBalanceID
+                },{...sendAccountModel}),
+                this.accountBalanceRepository.update({
+                  accountBalanceID: receivedAccountModel.accountBalanceID
+                }, {...receivedAccountModel}),
+                this.transactionRepository.save(transactionModel)
+              ])
+      
+              const output: CreateTransactionOutput = {
+                transaction: respose[2],
+                error: null
+              }
+      
+              return output
             }
-    
-            return output
           }
         }
       }

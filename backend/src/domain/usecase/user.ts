@@ -11,6 +11,7 @@ import * as bcrypt from 'bcrypt'
 import { signJWT } from "../../internal/utils/jsonwebtoken";
 import { TaxModel } from "../../internal/database/model/tax";
 import { AccountBalanceModel } from "../../internal/database/model/account_balance";
+import { dateNow } from "../../internal/utils/date";
 
 class UserUseCase {
   private userRepository: Repository<UserModel>
@@ -48,7 +49,7 @@ class UserUseCase {
           return output
         }
 
-        const now = new Date()
+        const now = dateNow()
         const hash = await bcrypt.hash(input.password, 5)
 
         const taxID = v4()

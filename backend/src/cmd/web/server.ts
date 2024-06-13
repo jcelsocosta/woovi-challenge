@@ -5,6 +5,7 @@ import { schema } from './graphql/schema'
 import logger from 'koa-logger'
 import { authorizationMiddleware, ContextGraphqlType } from './graphql/middleware/authorization'
 import cors from '@koa/cors'
+import { v4 } from 'uuid'
 
 const app = new Koa()
 
@@ -19,7 +20,7 @@ function initServerGraphql(): void {
   const handler = createHandler({ schema, async context(req: any, params: any): Promise<any> {
     const headers = req.headers.authorization
     const tokenEncrypted = headers?.split(' ')[1]
-    //console.log("headers", headers)
+
     if (tokenEncrypted) {
       return await authorizationMiddleware(tokenEncrypted)
     }

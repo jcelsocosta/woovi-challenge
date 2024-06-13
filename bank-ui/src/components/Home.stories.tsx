@@ -1,16 +1,22 @@
 import { Meta, StoryFn } from '@storybook/react'
-
-import LayutPrimary from './Primary'
+import React from 'react'
+import { MemoryRouter } from 'react-router-dom'
+import Home from './Home'
 
 export default {
-  title: '/layout/primary',
-  component: LayutPrimary,
+  title: 'components/home',
+  component: Home,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {}
-} as Meta<typeof LayutPrimary>
+} as Meta<typeof Home>
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: StoryFn<typeof LayutPrimary> = (args) => <LayutPrimary {...args} />
+const Template: StoryFn<typeof Home> = (args) => (
+  <MemoryRouter>
+    {' '}
+    <Home {...args} />{' '}
+  </MemoryRouter>
+)
 
 export const Base = Template.bind({})
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
