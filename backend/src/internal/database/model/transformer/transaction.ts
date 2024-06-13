@@ -9,7 +9,8 @@ function toTransactionModel(transaction: TransactionModel): TransactionModel {
     transaction.senderAccountID,
     transaction.receivedAccountID,
     transaction.value,
-    transaction.status
+    transaction.status,
+    transaction.idempotencyKey
   )
 }
 
