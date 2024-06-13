@@ -287,6 +287,7 @@ class UserUseCase {
     }
   }
 }
+
 export {
   UserUseCase
 }

@@ -34,9 +34,9 @@ class TransactionUseCase {
 
         return output
       } else if (!errorMessage) {
-        const receivedUser = await this.accountRepository.findOne({where: { userID: input.receivedUserID }})
+        const receivedAccount = await this.accountRepository.findOne({where: { userID: input.receivedUserID }})
 
-        if (!receivedUser) {
+        if (!receivedAccount) {
           const msgError = 'O destinatário não foi encontrado'
           console.log('Error', errorMessage)
           const output: CreateTransactionOutput = {
@@ -45,10 +45,10 @@ class TransactionUseCase {
           }
 
           return output
-        } else if (receivedUser) {
+        } else if (receivedAccount) {
           const result = await Promise.all([
             this.accountBalanceRepository.findOne({where: { accountID: input.senderAccountID }}),
-            this.accountBalanceRepository.findOne({where: {accountID: receivedUser.accountID}})
+            this.accountBalanceRepository.findOne({where: { accountID: receivedAccount.accountID }})
           ])
           const sendAccountBalance = result[0]
           const receivedAccountBalance = result[1]
