@@ -84,12 +84,12 @@ class TransactionUseCase {
 
             const transaction = await this.transactionRepository.findOne({ where: { idempotencyKey: idempotencyKey }, order: { createdDate: 'DESC' }})
             const currentDate = dateNow()
-            console.log('currentDate', currentDate)
-            console.log('p1', moment().format(transaction?.createdDate.toString()))
-            console.log('p2', moment().subtract(1, 'minutes').format())
+            //console.log('currentDate', currentDate)
+            //console.log('p1', moment().format(transaction?.createdDate.toString()))
+            //console.log('p2', moment().subtract(1, 'minutes').format())
             const current = momentTimezone.tz(new Date(), "America/Sao_Paulo").subtract(1, 'minutes').format()
-            console.log('current date', current)
-            console.log('date', moment().format(transaction?.createdDate.toString()) >= moment().subtract(3, 'minutes').format())
+            //console.log('current date', current)
+            //console.log('date', moment().format(transaction?.createdDate.toString()) >= moment().subtract(3, 'minutes').format())
             if (transaction && (moment().format(transaction.createdDate.toString()) >= current)) {
               const output: CreateTransactionOutput = {
                 transaction: transaction,
