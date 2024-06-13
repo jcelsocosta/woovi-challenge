@@ -12,4 +12,16 @@ type CreateTransactionOutput = {
   readonly error: ErrorType | null
 }
 
-export { CreateTransactionInput, CreateTransactionOutput }
+type ListTransactionsByAccountIDInput = {
+  readonly accountID: string
+}
+
+type LisTransactionsByAccountIDOutput = {
+  readonly transactions: TransactionModel[] | null
+  readonly error: ErrorType | null
+}
+
+export {
+  CreateTransactionInput, CreateTransactionOutput,
+  ListTransactionsByAccountIDInput, LisTransactionsByAccountIDOutput
+}

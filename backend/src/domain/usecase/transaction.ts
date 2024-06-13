@@ -1,6 +1,6 @@
 import { ErrorCodeEnum, ErrorMessageEnum } from "./enum/error"
-import { CreateTransactionInput, CreateTransactionOutput } from './ucio/transaction'
-import { createTransactionValidate } from '../../internal/validate/transaction'
+import { CreateTransactionInput, CreateTransactionOutput, LisTransactionsByAccountIDOutput, ListTransactionsByAccountIDInput } from './ucio/transaction'
+import { createTransactionValidate, listTransactionsByAccountIDValidate } from '../../internal/validate/transaction'
 import { v4 } from "uuid"
 import { TransactionModel } from "../../internal/database/model/transaction"
 import { appDataSource } from "../../main"
@@ -31,7 +31,7 @@ class TransactionUseCase {
 
         return output
       } else if (!errorMessage) {
-        const receivedUser = await this.accountRepository.findOne({where: {userID: input.receivedUserID}})
+        const receivedUser = await this.accountRepository.findOne({where: { userID: input.receivedUserID }})
 
         if (!receivedUser) {
           const msgError = 'O destinatário não foi encontrado'
@@ -66,7 +66,7 @@ class TransactionUseCase {
               now,
               now,
               input.senderAccountID,
-              input.receivedUserID,
+              receivedAccountBalance.accountID,
               input.value,
               'done'
             )
@@ -124,7 +124,61 @@ class TransactionUseCase {
 
       return output
     }
+  }
 
+  async listTransactionsByAccountID(input: ListTransactionsByAccountIDInput): Promise<LisTransactionsByAccountIDOutput> {
+    try {
+      const errorMessage = listTransactionsByAccountIDValidate(input)
+
+      if (errorMessage) {
+        console.log('Error', errorMessage)
+        const output: LisTransactionsByAccountIDOutput = { 
+          transactions: null,
+          error: { code: ErrorCodeEnum.PRECONDITIONAL, message: errorMessage }
+        }
+  
+        return output
+      } else if (!errorMessage) {
+        const transactions = await this.transactionRepository.find({
+          where:{
+          $or: [
+            { receivedAccountID: input.accountID },
+            { senderAccountID: input.accountID }
+          ]} as any
+        })
+        console.log('input.acc', input.accountID)
+
+        const transactionsFormatted = transactions.map((el) => {
+          return {
+            received: el.receivedAccountID === input.accountID ? 1 : 2,
+            sender: el.senderAccountID === input.accountID ? 1 : 2,
+            ...el
+          }
+        })
+        //console.log(transactionsFormatted)
+        const output: LisTransactionsByAccountIDOutput = { 
+          transactions: transactionsFormatted,
+          error: null
+        }
+  
+        return output  
+      }
+ 
+      const output: LisTransactionsByAccountIDOutput = { 
+        transactions: null,
+        error: null
+      }
+
+      return output
+    } catch (err: any) {
+      console.log('Error ', err)
+      const output: LisTransactionsByAccountIDOutput = { 
+        transactions: null,
+        error: { code: ErrorCodeEnum.INTERNAL, message: ErrorMessageEnum.INTERNAL}
+      }
+
+      return output
+    }
   }
 }
 

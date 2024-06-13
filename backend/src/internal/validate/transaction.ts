@@ -1,4 +1,4 @@
-import { CreateTransactionInput } from "../../domain/usecase/ucio/transaction";
+import { CreateTransactionInput, ListTransactionsByAccountIDInput } from "../../domain/usecase/ucio/transaction";
 import { isNumberEmpty, isStringEmpty } from "./validator";
 
 function createTransactionValidate(input: CreateTransactionInput): string | null {
@@ -11,6 +11,13 @@ function createTransactionValidate(input: CreateTransactionInput): string | null
   return null
 }
 
+function listTransactionsByAccountIDValidate(input: ListTransactionsByAccountIDInput): string | null {
+  if (isStringEmpty(input.accountID)) return 'O identificador da conta não foi informado.'
+
+  return null
+}
+
 export {
-  createTransactionValidate
+  createTransactionValidate,
+  listTransactionsByAccountIDValidate
 }
