@@ -1,4 +1,5 @@
-import React, { createContext, ReactNode, useState } from 'react'
+import React, { createContext, ReactNode, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 interface IAuthContext {
   logOut: () => void
@@ -11,8 +12,18 @@ const defaultValue: IAuthContext = {
 const AuthContext = createContext<IAuthContext>(defaultValue)
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const navigate = useNavigate()
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+
+    if (token) {
+      navigate('/home')
+    } else if (!token) {
+      navigate('/login')
+    }
+  }),
+    []
   const logOut = () => {
-    console.log('CHEGA AQUI')
     localStorage.removeItem('token')
   }
 
