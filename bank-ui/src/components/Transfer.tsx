@@ -199,17 +199,18 @@ export default function Transfer({}: ITransferProps) {
 
                     <div className="mt-2">
                       {users && users.length > 0 && (
-                        <RadioGroup defaultValue="comfortable">
+                        <RadioGroup value={receivedID}>
                           {users &&
                             users.map((el) => (
                               <div
                                 className="flex items-center space-x-2"
                                 key={el.userID}
                                 onClick={(evt) => {
+                                  evt.preventDefault()
                                   setReceivedID(() => el.userID)
                                 }}
                               >
-                                <RadioGroupItem value="default" id="r1" />
+                                <RadioGroupItem value={el.userID} id="r1" />
                                 <Label htmlFor="r1">
                                   {el.firstName} {el.lastName}
                                 </Label>

@@ -16,6 +16,7 @@ export default function SignUp({}: ISignUpProps) {
   const [lastName, setLastName] = useState<string>('')
   const [cpf, setCpf] = useState<string>('')
   const [cnpj, setCnpj] = useState<string>('')
+  const [tax, setTax] = useState<string>('')
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [repeatPassword, setrepeatPassword] = useState<string>('')
@@ -68,10 +69,37 @@ export default function SignUp({}: ISignUpProps) {
             />
             <Input
               placeholder="CPF/CNPJ"
-              max={20}
+              maxLength={18}
+              minLength={14}
+              value={tax}
               onChange={(evt) => {
                 evt.preventDefault()
-                setCpf(() => evt.target.value)
+
+                if (evt.target.value) {
+                  const current = evt.target.value.replace(/\D/g, '')
+
+                  if (current && current.length <= 11) {
+                    setCnpj(() => '')
+                    let target = current
+                    target = target.replace(/(\d{3})(\d)/, '$1.$2')
+                    target = target.replace(/(\d{3})(\d)/, '$1.$2')
+                    target = target.replace(/(\d{3})(\d{1,2})$/, '$1-$2')
+                    setTax(() => target)
+                    setCpf(() => target)
+                  } else if (current && current.length > 11) {
+                    setCpf(() => '')
+                    let target = current
+
+                    target = target.replace(/(\d{2})(\d)/, '$1.$2')
+                    target = target.replace(/(\d{3})(\d)/, '$1.$2')
+                    target = target.replace(/(\d{3})(\d)/, '$1/$2')
+                    target = target.replace(/(\d{4})(\d{1,2})$/, '$1-$2')
+                    setTax(() => target)
+                    setCnpj(() => target)
+                  }
+                } else {
+                  setTax(() => evt.target.value.replace(/\D/g, ''))
+                }
               }}
             />
             <Input
