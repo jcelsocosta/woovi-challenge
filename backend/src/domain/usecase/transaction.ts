@@ -83,6 +83,7 @@ class TransactionUseCase {
 
             const transaction = await this.transactionRepository.findOne({ where: { idempotencyKey: idempotencyKey }, order: { createdDate: 'DESC' }})
             const currentDate = dateNow()
+            console.log('currentDate', currentDate)
             console.log('p1', moment().format(transaction?.createdDate.toString()))
             console.log('p2', moment(currentDate).subtract(1, 'minutes').format())
             
