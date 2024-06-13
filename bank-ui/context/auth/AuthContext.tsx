@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate()
   useEffect(() => {
     const token = localStorage.getItem('token')
-
+    console.log('token', token)
     if (token) {
       navigate('/home')
     } else if (!token) {
