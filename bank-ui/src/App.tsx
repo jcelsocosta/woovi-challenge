@@ -11,8 +11,8 @@ import Default from './components/Default'
 function App() {
   return (
     <>
-      <Routes>
-        <AuthProvider>
+      <AuthProvider>
+        <Routes>
           <Route path="/" element={<Default></Default>} />
           <Route path="/transfer" element={<Transfer></Transfer>}></Route>
           <Route path="/home" element={<Home></Home>} />
@@ -20,10 +20,10 @@ function App() {
 
           <Route path="/history" element={<History></History>} />
           <Route path="*" element={<NoMatch></NoMatch>}></Route>
-        </AuthProvider>
 
-        <Route path="/signup" element={<SignUp></SignUp>} />
-      </Routes>
+          <Route path="/signup" element={<SignUp></SignUp>} />
+        </Routes>
+      </AuthProvider>
     </>
   )
 }

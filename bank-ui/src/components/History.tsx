@@ -1,6 +1,8 @@
 import { centsToReals } from '@/utils/cents_to_reals'
+import AuthContext from '../../context/auth/AuthContext'
 import moment from 'moment'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { historyController } from './HistoryController'
 import NavigationLeft from './navigationLeft/navigationLeft'
 import NavigationTop from './navigationTop/navigationTop'
@@ -23,9 +25,16 @@ export interface IHistoryProps extends React.ComponentPropsWithoutRef<'div'> {}
 export default function History({}: IHistoryProps) {
   const [transactions, setTransactions] = useState<TransactionType[]>([])
 
+  const { isAuth } = useContext(AuthContext)
+  const navigate = useNavigate()
+
   useEffect(() => {
-    initComponent()
-  }, [])
+    if (!isAuth) {
+      navigate('/login')
+    } else {
+      initComponent()
+    }
+  }, [isAuth])
 
   async function initComponent(): Promise<void> {
     await listTransactionsByAccountID()
@@ -83,7 +92,7 @@ export default function History({}: IHistoryProps) {
                 <CardContent>
                   <div className="w-full">
                     {transactions &&
-                      transactions.length &&
+                      transactions.length > 0 &&
                       transactions.map((el) => (
                         <div className="w-full" key={el.transactionID}>
                           {el.sender === 1 ? (

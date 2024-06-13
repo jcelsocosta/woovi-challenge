@@ -1,5 +1,6 @@
 import { centsToReals } from '@/utils/cents_to_reals'
-import { useEffect, useState } from 'react'
+import AuthContext from '../../context/auth/AuthContext'
+import { useContext, useEffect, useState } from 'react'
 import { homeController } from './HomeController'
 import NavigationLeft from './navigationLeft/navigationLeft'
 import NavigationTop from './navigationTop/navigationTop'
@@ -11,10 +12,11 @@ export interface IHomeProps extends React.ComponentPropsWithoutRef<'div'> {}
 
 export default function Home({}: IHomeProps) {
   const [balance, setBalance] = useState<number>(0)
+  const { isAuth } = useContext(AuthContext)
 
   useEffect(() => {
     initComponent()
-  }, [])
+  }, [isAuth])
 
   async function initComponent(): Promise<void> {
     await getAccountBalanceByAccountID()

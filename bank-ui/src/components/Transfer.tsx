@@ -1,5 +1,6 @@
 import { centsToReals } from '@/utils/cents_to_reals'
-import { useEffect, useState } from 'react'
+import AuthContext from '../../context/auth/AuthContext'
+import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import NavigationLeft from './navigationLeft/navigationLeft'
 import NavigationTop from './navigationTop/navigationTop'
@@ -28,9 +29,15 @@ export default function Transfer({}: ITransferProps) {
   const [receivedID, setReceivedID] = useState<string>('')
   const [value, setValue] = useState<string>('')
 
+  const { isAuth } = useContext(AuthContext)
+
   useEffect(() => {
-    initComponent()
-  }, [])
+    if (!isAuth) {
+      navigate('/login')
+    } else {
+      initComponent()
+    }
+  }, [isAuth])
 
   function clearFields(): void {
     setBalance(() => 0)

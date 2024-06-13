@@ -2,16 +2,13 @@ import { FormControl, FormField, FormItem, FormMessage } from '../ui/form'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
-import { loginController } from './LoginController'
-import { toast } from '../ui/use-toast'
-import { ToastAction } from '../ui/toast'
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useContext, useState } from 'react'
+import AuthContext from '../../../context/auth/AuthContext'
 
 export interface ILoginProps extends React.ComponentPropsWithoutRef<'div'> {}
 
 export default function Login({}: ILoginProps) {
-  const navigate = useNavigate()
+  const { login } = useContext(AuthContext)
 
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
@@ -89,39 +86,7 @@ export default function Login({}: ILoginProps) {
                         onClick={async (evt) => {
                           evt.preventDefault()
 
-                          const queryText = `
-                              mutation LoginUser {
-                                loginUser(email: "${email}", password: "${password}") {
-                                  token
-                                  error {
-                                    code
-                                    message
-                                  }
-                                }
-                              }
-                            `
-                          const { data } = await loginController.login(queryText)
-
-                          const { loginUser } = data
-                          if (loginUser && loginUser.error) {
-                            toast({
-                              title: 'Messagem de error',
-                              variant: 'destructive',
-                              description: loginUser.error.message,
-                              action: <ToastAction altText="Goto schedule">Fechar</ToastAction>
-                            })
-                          } else if (loginUser && loginUser.token) {
-                            localStorage.setItem('token', loginUser.token)
-
-                            navigate('/home')
-                          } else if (loginUser && !loginUser.token && !loginUser.error) {
-                            toast({
-                              title: 'Messagem de error',
-                              variant: 'destructive',
-                              description: 'Email ou senha incorretos',
-                              action: <ToastAction altText="Goto schedule">Fechar</ToastAction>
-                            })
-                          }
+                          await login(email, password)
                         }}
                       >
                         Entrar{' '}
