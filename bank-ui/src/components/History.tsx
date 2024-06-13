@@ -1,7 +1,6 @@
 import { centsToReals } from '@/utils/cents_to_reals'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { historyController } from './HistoryController'
 import NavigationLeft from './navigationLeft/navigationLeft'
 import NavigationTop from './navigationTop/navigationTop'
@@ -22,7 +21,6 @@ type TransactionType = {
 export interface IHistoryProps extends React.ComponentPropsWithoutRef<'div'> {}
 
 export default function History({}: IHistoryProps) {
-  const navigate = useNavigate()
   const [transactions, setTransactions] = useState<TransactionType[]>([])
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 import { centsToReals } from '@/utils/cents_to_reals'
 import { useEffect, useState } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import NavigationLeft from './navigationLeft/navigationLeft'
 import NavigationTop from './navigationTop/navigationTop'
 import { transferController } from './TransferController'
