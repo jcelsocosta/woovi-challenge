@@ -57,9 +57,47 @@ O backend deve ser uma API GraphQL que gerencia funcionalidades como registro e 
 - **Autenticação**: JWT
 - **Relay**: Utilizado para gerenciar coleções e listas
 
+![Status](https://img.shields.io/badge/status-em%20desenvolvimento-brightgreen)
+
+# Full Stack Developer Challenge - Frontend
+
+Este repositório contém o frontend do desafio para desenvolvedores Full Stack. O objetivo é criar uma interface web que permite aos usuários registrarem-se, fazer login, visualizar suas informações de conta e realizar transferências financeiras.
+
+
+## Índice
+
+- [Sobre](#sobre)
+- [Funcionalidades](#funcionalidades)
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Instalação](#instalação)
+- [Como Usar](#como-usar)
+- [Contribuição](#contribuição)
+- [Licença](#licença)
+
+## Sobre
+
+O frontend deve fornecer uma página de login/registro, exibir dados do usuário e da conta após o login, e permitir transferências de dinheiro entre contas. Este projeto usa Vite com React Router, Relay para gerenciar dados, e Shadcn para componentes de UI.
+
+## Funcionalidades
+
+- **Login e Registro**
+  - Página para login e registro de usuários.
+  - Retorna o usuário logado e mostra a página inicial após o login.
+
+- **Página Inicial**
+  - Exibe informações do usuário e da conta.
+  - Botão de ação para transferir dinheiro entre contas.
+
+## Tecnologias Utilizadas
+
+- **Framework**: Vite
+- **Biblioteca de UI**: React com Shadcn
+- **Roteamento**: React Router
+- **Gerenciamento de Dados**: Relay
+
 ## Instalação
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/seu-usuario/fullstack-developer-challenge.git
-   cd fullstack-developer-challenge
+   git clone https://github.com/jcelsocosta/woovi-challenge
+   cd woovi-challenge
