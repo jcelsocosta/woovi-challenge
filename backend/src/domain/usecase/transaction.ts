@@ -10,6 +10,7 @@ import { AccountModel } from "../../internal/database/model/account"
 import crypto from 'crypto'
 import { dateNow } from "../../internal/utils/date"
 import moment from "moment"
+import momentTimezone from 'moment-timezone'
 
 class TransactionUseCase {
   private transactionRepository: Repository<TransactionModel>
@@ -85,10 +86,11 @@ class TransactionUseCase {
             const currentDate = dateNow()
             console.log('currentDate', currentDate)
             console.log('p1', moment().format(transaction?.createdDate.toString()))
-            console.log('p2', moment(currentDate).subtract(1, 'minutes').format())
-            
+            console.log('p2', moment().subtract(1, 'minutes').format())
+            const current = momentTimezone.tz(new Date(), "America/Sao_Paulo").subtract(1, 'minutes').format()
+            console.log('current date', current)
             console.log('date', moment().format(transaction?.createdDate.toString()) >= moment().subtract(3, 'minutes').format())
-            if (transaction && (moment().format(transaction.createdDate.toString()) >= moment(currentDate).subtract(1, 'minutes').format())) {
+            if (transaction && (moment().format(transaction.createdDate.toString()) >= current)) {
               const output: CreateTransactionOutput = {
                 transaction: transaction,
                 error: null
