@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import AuthContext from '../../../context/auth/AuthContext'
+import React, { useContext, useState } from 'react'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { ToastAction } from '../ui/toast'
@@ -9,7 +9,7 @@ import { signUpController } from './SignUpController'
 export interface ISignUpProps extends React.ComponentPropsWithoutRef<'div'> {}
 
 export default function SignUp({}: ISignUpProps) {
-  const navigate = useNavigate()
+  const { validateToken } = useContext(AuthContext)
 
   const { toast } = useToast()
   const [firstName, setFirstName] = useState<string>('')
@@ -177,9 +177,7 @@ export default function SignUp({}: ISignUpProps) {
                     action: <ToastAction altText="Goto schedule">Fechar</ToastAction>
                   })
                 } else if (createUser && createUser.token) {
-                  localStorage.setItem('token', createUser.token)
-
-                  navigate('/home')
+                  validateToken(createUser.token)
                 }
               } else if (errorMessage) {
                 toast({

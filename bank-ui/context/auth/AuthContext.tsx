@@ -8,12 +8,14 @@ interface IAuthContext {
   isAuth: boolean
   login: (email: string, password: string) => void
   logout: () => void
+  validateToken: (token: string) => void
 }
 
 const defaultValue: IAuthContext = {
   isAuth: false,
   login: () => undefined,
-  logout: () => undefined
+  logout: () => undefined,
+  validateToken: () => undefined
 }
 
 const AuthContext = createContext<IAuthContext>(defaultValue)
@@ -76,7 +78,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-  return <AuthContext.Provider value={{ isAuth: isAuthenticated, login, logout }}>{children}</AuthContext.Provider>
+  const validateToken = (token: string) => {
+    localStorage.setItem('token', token)
+    setIsAuthenticated(() => true)
+
+    window.location.href = '/home'
+  }
+
+  return <AuthContext.Provider value={{ isAuth: isAuthenticated, login, logout, validateToken }}>{children}</AuthContext.Provider>
 }
 
 export default AuthContext
