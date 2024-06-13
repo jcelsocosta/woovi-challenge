@@ -62,6 +62,7 @@ O backend deve ser uma API GraphQL que gerencia funcionalidades como registro e 
 - **API**: GraphQL
 - **Autenticação**: JWT
 - **Relay**: Utilizado para gerenciar coleções e listas
+- **Test**: Vitest:
 
 ![Status](https://img.shields.io/badge/status-finalizado-blue)
 
@@ -97,6 +98,7 @@ O frontend deve fornecer uma página de login/registro, exibir dados do usuário
 - **Biblioteca de UI**: React com Shadcn
 - **Roteamento**: React Router
 - **Gerenciamento de Dados**: Relay
+- **Documentação**: Storybook
 
 ## Instalação
 
