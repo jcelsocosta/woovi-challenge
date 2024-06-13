@@ -36,6 +36,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem('token')
 
     setIsAuthenticated(() => false)
+
+    navigate('/login')
   }
 
   const login = async (email: string, password: string) => {
