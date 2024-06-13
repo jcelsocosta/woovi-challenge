@@ -34,7 +34,24 @@ class TransactionUseCase {
 
         return output
       } else if (!errorMessage) {
-        const receivedAccount = await this.accountRepository.findOne({where: { userID: input.receivedUserID }})
+        const result = await Promise.all([
+          this.accountRepository.findOne({where: { accountID: input.senderAccountID }}),
+          this.accountRepository.findOne({where: { userID: input.receivedUserID }})
+        ])
+
+        const senderAccountExist = result[0]
+        const receivedAccount = result[1]
+
+        if (!senderAccountExist) {
+          const msgError = 'O remetente não foi encontrado'
+          console.log('Error', errorMessage)
+          const output: CreateTransactionOutput = {
+            transaction: null,
+            error: { code: ErrorCodeEnum.PRECONDITIONAL, message: msgError }
+          }
+
+          return output
+        }
 
         if (!receivedAccount) {
           const msgError = 'O destinatário não foi encontrado'
