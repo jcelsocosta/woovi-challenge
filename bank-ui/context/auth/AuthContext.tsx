@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     setIsAuthenticated(() => false)
 
-    navigate('/login')
+    window.location.href = '/login'
   }
 
   const login = async (email: string, password: string) => {
