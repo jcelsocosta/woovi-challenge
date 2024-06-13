@@ -7,11 +7,13 @@ import { useNavigate } from 'react-router-dom'
 interface IAuthContext {
   isAuth: boolean
   login: (email: string, password: string) => void
+  logout: () => void
 }
 
 const defaultValue: IAuthContext = {
   isAuth: false,
-  login: () => undefined
+  login: () => undefined,
+  logout: () => undefined
 }
 
 const AuthContext = createContext<IAuthContext>(defaultValue)
@@ -29,6 +31,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setIsAuthenticated(false)
     }
   }, [])
+
+  const logout = () => {
+    localStorage.removeItem('token')
+
+    setIsAuthenticated(() => false)
+  }
 
   const login = async (email: string, password: string) => {
     const queryText = `
@@ -54,6 +62,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       })
     } else if (loginUser && loginUser.token) {
       localStorage.setItem('token', loginUser.token)
+      setIsAuthenticated(() => true)
       navigate('/home')
     } else if (loginUser && !loginUser.token && !loginUser.error) {
       toast({
@@ -65,7 +74,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-  return <AuthContext.Provider value={{ isAuth: isAuthenticated, login }}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={{ isAuth: isAuthenticated, login, logout }}>{children}</AuthContext.Provider>
 }
 
 export default AuthContext

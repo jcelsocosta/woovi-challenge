@@ -1,12 +1,13 @@
 import { DropdownMenuContent } from '@radix-ui/react-dropdown-menu'
 import { CircleUser, LogOut } from 'lucide-react'
 import { DropdownMenu, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu'
-import { useNavigate } from 'react-router-dom'
+import { useContext } from 'react'
+import AuthContext from '../../../context/auth/AuthContext'
 
 export interface INavigationTopProps extends React.ComponentPropsWithoutRef<'div'> {}
 
 export default function NavigationTop({ className }: INavigationTopProps) {
-  const navigate = useNavigate()
+  const { logout } = useContext(AuthContext)
   return (
     <div className={`bg-woovi h-12 text-white ${className}`}>
       <div className="flex flex-row justify-between items-center h-full mx-4">
@@ -21,8 +22,7 @@ export default function NavigationTop({ className }: INavigationTopProps) {
                 className="cursor-pointer"
                 onClick={(evt) => {
                   evt.preventDefault()
-                  localStorage.removeItem('token')
-                  navigate('/login')
+                  logout()
                 }}
               >
                 <LogOut />
