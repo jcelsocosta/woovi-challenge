@@ -1,4 +1,4 @@
-# Full Stack Developer Challenge
+# FullStack Software Engineer Challenge
 
 Este repositório contém o desafio para desenvolvedores Full Stack. O objetivo é criar uma API GraphQL que lida com funcionalidades básicas de um sistema bancário.
 
