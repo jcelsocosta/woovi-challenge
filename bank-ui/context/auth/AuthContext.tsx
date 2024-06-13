@@ -82,7 +82,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem('token', token)
     setIsAuthenticated(() => true)
 
-    window.location.href = '/home'
+    navigate('/home')
   }
 
   return <AuthContext.Provider value={{ isAuth: isAuthenticated, login, logout, validateToken }}>{children}</AuthContext.Provider>
