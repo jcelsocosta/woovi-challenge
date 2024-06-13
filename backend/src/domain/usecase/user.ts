@@ -48,13 +48,15 @@ class UserUseCase {
           }
           return output
         }
+        const CPF = input.CPF ? input.CPF.replace(/\D/g, '') : null 
+        const CNPJ = input.CNPJ ? input.CNPJ.replace(/\D/g, '') : null 
         let existTax
-        if (input.CPF) {
+        if (CPF) {
           existTax = await this.taxRepository.findOne({
-            where:{ cpf: input.CPF}})
-        } else if (input.CNPJ) {
+            where:{ cpf: CPF}})
+        } else if (CNPJ) {
           existTax = await this.taxRepository.findOne({
-            where:{ cpf: input.CNPJ}})
+            where:{ cnpj: CNPJ}})
         }
 
         if (existTax) {
@@ -74,8 +76,8 @@ class UserUseCase {
           now,
           now,
           now,
-          input.CPF,
-          input.CNPJ
+          CPF,
+          CNPJ 
         )
 
         const userID = v4()
