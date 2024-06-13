@@ -85,7 +85,7 @@ class TransactionUseCase {
             // console.log('p1', moment().format(transaction?.createdDate.toString()))
             // console.log('p2', moment().subtract(3, 'minutes').format())
             // console.log('date', moment().format(transaction?.createdDate.toString()) >= moment().subtract(3, 'minutes').format())
-            if (transaction && (moment().format(transaction.createdDate.toString()) >= moment().subtract(3, 'minutes').format())) {
+            if (transaction && (moment().format(transaction.createdDate.toString()) >= moment().add(1, 'minutes').format())) {
               const output: CreateTransactionOutput = {
                 transaction: transaction,
                 error: null
