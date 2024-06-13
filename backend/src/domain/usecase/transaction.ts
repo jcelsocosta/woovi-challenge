@@ -166,7 +166,6 @@ class TransactionUseCase {
             { senderAccountID: input.accountID }
           ]} as any
         })
-        console.log('input.acc', input.accountID)
 
         const transactionsFormatted = transactions.map((el) => {
           return {

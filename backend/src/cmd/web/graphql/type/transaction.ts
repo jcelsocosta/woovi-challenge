@@ -5,6 +5,7 @@ const transactionType = new GraphQLObjectType({
   name: 'transactionType',
   fields: {
     transactionID: { type: GraphQLString },
+    createdDate: { type: GraphQLString },
     value: { type: GraphQLInt },
     status: { type: GraphQLString },
     sender: { type: GraphQLInt },

@@ -48,7 +48,23 @@ class UserUseCase {
           }
           return output
         }
+        let existTax
+        if (input.CPF) {
+          existTax = await this.taxRepository.findOne({
+            where:{ cpf: input.CPF}})
+        } else if (input.CNPJ) {
+          existTax = await this.taxRepository.findOne({
+            where:{ cpf: input.CNPJ}})
+        }
 
+        if (existTax) {
+          console.log('Error: ', 'O cpf/cnpj já foi cadastrado.')
+          const output: CreateUserOutput = {
+            token: null,
+            error: { code: ErrorCodeEnum.PRECONDITIONAL, message: 'O cpf/cnpj já foi cadastrado.' }
+          }
+          return output
+        }
         const now = dateNow()
         const hash = await bcrypt.hash(input.password, 5)
 
