@@ -10,9 +10,6 @@ Este repositório contém o desafio para desenvolvedores Full Stack. O objetivo 
 - [Funcionalidades](#funcionalidades)
 - [Tecnologias Utilizadas](#tecnologias-utilizadas)
 - [Instalação](#instalação)
-- [Como Usar](#como-usar)
-- [Contribuição](#contribuição)
-- [Licença](#licença)
 
 ## Sobre
 
@@ -70,9 +67,6 @@ Este repositório contém o frontend do desafio para desenvolvedores Full Stack.
 - [Funcionalidades](#funcionalidades)
 - [Tecnologias Utilizadas](#tecnologias-utilizadas)
 - [Instalação](#instalação)
-- [Como Usar](#como-usar)
-- [Contribuição](#contribuição)
-- [Licença](#licença)
 
 ## Sobre
 
