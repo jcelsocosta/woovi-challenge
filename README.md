@@ -11,7 +11,7 @@ Este repositório contém o desafio para desenvolvedores Full Stack. O objetivo 
 
 # Full Stack Developer Challenge - Backend
 
-![Status](https://img.shields.io/badge/status-em%20desenvolvimento-brightgreen)
+![Status](https://img.shields.io/badge/status-finalizado-blue)
 
 ## Índice
 
@@ -63,7 +63,7 @@ O backend deve ser uma API GraphQL que gerencia funcionalidades como registro e 
 - **Autenticação**: JWT
 - **Relay**: Utilizado para gerenciar coleções e listas
 
-![Status](https://img.shields.io/badge/status-em%20desenvolvimento-brightgreen)
+![Status](https://img.shields.io/badge/status-finalizado-blue)
 
 # Full Stack Developer Challenge - Frontend
 
