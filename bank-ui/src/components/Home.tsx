@@ -15,7 +15,9 @@ export default function Home({}: IHomeProps) {
   const { isAuth } = useContext(AuthContext)
 
   useEffect(() => {
-    initComponent()
+    if (isAuth) {
+      initComponent()
+    }
   }, [isAuth])
 
   async function initComponent(): Promise<void> {
