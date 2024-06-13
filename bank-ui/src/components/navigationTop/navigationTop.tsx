@@ -1,6 +1,5 @@
 import { DropdownMenuContent } from '@radix-ui/react-dropdown-menu'
-import { ArrowLeft, CircleUser, LogOut } from 'lucide-react'
-import { useContext } from 'react'
+import { CircleUser, LogOut } from 'lucide-react'
 import { DropdownMenu, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import { useNavigate } from 'react-router-dom'
 

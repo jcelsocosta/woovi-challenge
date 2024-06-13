@@ -1,4 +1,4 @@
-import { BadgeDollarSign, HomeIcon } from 'lucide-react'
+import { BadgeDollarSign, History, HomeIcon } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
 export interface INavigationLeftProps extends React.ComponentPropsWithoutRef<'div'> {}
@@ -31,6 +31,16 @@ export default function NavigationLeft({}: INavigationLeftProps) {
           }}
         >
           <BadgeDollarSign /> Transferência
+        </span>
+
+        <span
+          className="inline-flex gap-x-2 items-center cursor-pointer"
+          onClick={(evt) => {
+            evt.preventDefault()
+            navigate('/history')
+          }}
+        >
+          <History /> Histórico
         </span>
       </div>
     </div>
