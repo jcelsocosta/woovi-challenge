@@ -22,19 +22,19 @@ export default function SignUp({}: ISignUpProps) {
   const [repeatPassword, setrepeatPassword] = useState<string>('')
 
   function validateSignUp(args: any): string | null {
-    if (!firstName) return 'Informe o nome.'
+    if (!args.firstName) return 'Informe o nome.'
 
-    if (!lastName) return 'Informe o sobrenome.'
+    if (!args.lastName) return 'Informe o sobrenome.'
 
-    if (!cpf && !cnpj) return 'Informe o CPF ou CNPJ'
+    if (!args.cpf && !args.cnpj) return 'Informe o CPF ou CNPJ'
 
-    if (!email) return 'Informe o email.'
+    if (!args.email) return 'Informe o email.'
 
-    if (!password) return 'Informe a senha.'
+    if (!args.password) return 'Informe a senha.'
 
-    if (!repeatPassword) return 'Informe a confirmação da senha.'
+    if (!args.repeatPassword) return 'Informe a confirmação da senha.'
 
-    if (password && repeatPassword && password !== repeatPassword) return 'As senhas não são iguais.'
+    if (args.password && args.repeatPassword && args.password !== args.repeatPassword) return 'As senhas não são iguais.'
 
     return null
   }
@@ -149,13 +149,13 @@ export default function SignUp({}: ISignUpProps) {
                 const queryText = `
                     mutation CreateUser {
                       createUser(
-                        firstName: "${firstName}",
-                        lastName: "${lastName}",
-                        CPF: "${cpf}",
-                        CNPJ: "${cnpj}",
-                        email: "${email}",
-                        password: "${password}",
-                        repeatPassword: "${repeatPassword}"
+                        firstName: "${payload.firstName}",
+                        lastName: "${payload.lastName}",
+                        CPF: "${payload.cpf}",
+                        CNPJ: "${payload.cnpj}",
+                        email: "${payload.email}",
+                        password: "${payload.password}",
+                        repeatPassword: "${payload.repeatPassword}"
                       ) {
                         token
                         error {
@@ -166,7 +166,7 @@ export default function SignUp({}: ISignUpProps) {
                     }
                   `
                 const { data } = await signUpController.createSignUp(queryText)
-                console.log('data', data)
+
                 const { createUser } = data
 
                 if (createUser && createUser.error) {
