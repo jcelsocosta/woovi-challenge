@@ -1,6 +1,6 @@
 import { centsToReals } from '@/utils/cents_to_reals'
-import AuthContext from '../../context/auth/AuthContext'
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { homeController } from './HomeController'
 import NavigationLeft from './navigationLeft/navigationLeft'
 import NavigationTop from './navigationTop/navigationTop'
@@ -12,13 +12,16 @@ export interface IHomeProps extends React.ComponentPropsWithoutRef<'div'> {}
 
 export default function Home({}: IHomeProps) {
   const [balance, setBalance] = useState<number>(0)
-  const { isAuth } = useContext(AuthContext)
+  const navigate = useNavigate()
 
   useEffect(() => {
-    if (isAuth) {
+    const token = localStorage.getItem('token')
+    if (token) {
       initComponent()
+    } else if (!token) {
+      navigate('/login')
     }
-  }, [isAuth])
+  }, [])
 
   async function initComponent(): Promise<void> {
     await getAccountBalanceByAccountID()
